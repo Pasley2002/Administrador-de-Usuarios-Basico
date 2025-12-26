@@ -3,10 +3,12 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
-app.get("/", (req, res) => {
-  res.send("Backend funcionando");
+app.use(express.json());
+
+app.get("/", (_req, res) => {
+  res.send("El backend está funcionando");
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`El servidor está corriendo en http://localhost:${PORT}`);
 });
