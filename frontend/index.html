@@ -11,12 +11,14 @@
     <button id="enviar">Enviar usuario</button>
 
     <script>
+      // Envía un usuario de prueba al backend cuando se hace click en el botón
       document.getElementById("enviar").addEventListener("click", () => {
         fetch("http://localhost:3000/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          // Datos enviados al backend (usuario de prueba)
           body: JSON.stringify({
             nombre: "Matias",
             apellido: "Valdes",
@@ -24,8 +26,20 @@
           }),
         })
           .then((res) => res.json())
+          // Respuesta del backend luego de crear el usuario
           .then((data) => console.log(data));
       });
+    </script>
+
+    <script>
+      // Obtiene la lista de usuarios guardados en el backend
+      function obtenerUsuarios() {
+        fetch("http://localhost:3000/users")
+          .then((res) => res.json())
+          .then((usuarios) => {
+            console.log("Usuarios guardados:", usuarios);
+          });
+      }
     </script>
   </body>
 </html>
