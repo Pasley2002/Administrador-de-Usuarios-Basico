@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -9,6 +9,9 @@
     <h1>Crear usuario (Prueba)</h1>
 
     <button id="enviar">Enviar usuario</button>
+
+    <h2>Usuarios creados</h2>
+    <ul id="listaUsuarios"></ul>
 
     <script>
       // Envía un usuario de prueba al backend cuando se hace click en el botón
@@ -27,19 +30,37 @@
         })
           .then((res) => res.json())
           // Respuesta del backend luego de crear el usuario
-          .then((data) => console.log(data));
+          .then((data) => {
+            console.log(data);
+            obtenerUsuarios();
+          });
       });
     </script>
 
     <script>
-      // Obtiene la lista de usuarios guardados en el backend
+      // Obtiene la lista de usuarios y los muestra en pantalla
       function obtenerUsuarios() {
         fetch("http://localhost:3000/users")
           .then((res) => res.json())
           .then((usuarios) => {
-            console.log("Usuarios guardados:", usuarios);
+            const lista = document.getElementById("listaUsuarios");
+
+            // Limpiamos la lista antes de volver a renderizar
+            lista.innerHTML = "";
+
+            usuarios.forEach((usuario) => {
+              const item = document.createElement("li");
+              item.textContent = `${usuario.id} - ${usuario.nombre} ${usuario.apellido} (${usuario.edad})`;
+              lista.appendChild(item);
+            });
           });
       }
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        obtenerUsuarios();
+      });
     </script>
   </body>
 </html>
