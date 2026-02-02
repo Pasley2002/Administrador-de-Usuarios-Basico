@@ -8,7 +8,16 @@
   <body>
     <h1>Crear usuario (Prueba)</h1>
 
+    <h2>Nuevo usuario</h2>
+
+    <input id="nombre" placeholder="Nombre" />
+    <input id="apellido" placeholder="Apellido" />
+    <input id="edad" type="number" placeholder="Edad" />
+
+    <button id="enviar">Crear usuario</button>
     <button id="enviar">Enviar usuario</button>
+
+    <div id="mensaje"></div>
 
     <h2>Usuarios creados</h2>
     <ul id="listaUsuarios"></ul>
@@ -16,6 +25,10 @@
     <script>
       // Envía un usuario de prueba al backend cuando se hace click en el botón
       document.getElementById("enviar").addEventListener("click", () => {
+        const nombre = document.getElementById("nombre").value;
+        const apellido = document.getElementById("apellido").value;
+        const edad = Number(document.getElementById("edad").value);
+
         fetch("http://localhost:3000/users", {
           method: "POST",
           headers: {
@@ -23,17 +36,23 @@
           },
           // Datos enviados al backend (usuario de prueba)
           body: JSON.stringify({
-            nombre: "Matias",
-            apellido: "Valdes",
-            edad: 23,
+            nombre,
+            apellido,
+            edad,
           }),
-        })
-          .then((res) => res.json())
-          // Respuesta del backend luego de crear el usuario
-          .then((data) => {
-            console.log(data);
-            obtenerUsuarios();
-          });
+        }).then(async (res) => {
+          const data = await res.json();
+
+          const divMensaje = document.getElementById("mensaje");
+
+          if (!res.ok) {
+            divMensaje.textContent = data.error;
+            return;
+          }
+
+          divMensaje.textContent = data.mensaje;
+          obtenerUsuarios();
+        });
       });
     </script>
 
