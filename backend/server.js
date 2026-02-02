@@ -68,6 +68,28 @@ app.get("/users", (_req, res) => {
   res.json(users);
 });
 
+// =============================
+// Eliminar usuario por ID
+// =============================
+app.delete("/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  const index = users.findIndex(u => u.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({
+      error: "Usuario no encontrado"
+    });
+  }
+
+  const eliminado = users.splice(index, 1);
+
+  res.json({
+    mensaje: "Usuario eliminado",
+    usuario: eliminado[0]
+  });
+})
+
 app.listen(PORT, () => {
   console.log(`El servidor está corriendo en http://localhost:${PORT}`);
 });

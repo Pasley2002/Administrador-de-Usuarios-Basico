@@ -69,7 +69,27 @@
 
             usuarios.forEach((usuario) => {
               const item = document.createElement("li");
-              item.textContent = `${usuario.id} - ${usuario.nombre} ${usuario.apellido} (${usuario.edad})`;
+
+              const texto = document.createElement("span");
+              texto.textContent = `${usuario.id} - ${usuario.nombre} ${usuario.apellido} (${usuario.edad})`;
+
+              const btnEliminar = document.createElement("button");
+              btnEliminar.textContent = "Eliminar";
+
+              btnEliminar.addEventListener("click", () => {
+                fetch(`http://localhost:3000/users/${usuario.id}`, {
+                  method: "DELETE",
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    console.log(data);
+                    obtenerUsuarios();
+                  });
+              });
+
+              item.appendChild(texto);
+              item.appendChild(btnEliminar);
+
               lista.appendChild(item);
             });
           });
